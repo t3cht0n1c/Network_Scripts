@@ -12,7 +12,7 @@ import netmiko
 import random
 import string
 
-ip_addr = '209.10.72.159'
+ip_addr = ''
 
 # function to create randomized password
 def ran_pass(size=24, char=string.ascii_upercase + string.digits):
