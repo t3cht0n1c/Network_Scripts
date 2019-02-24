@@ -1,0 +1,84 @@
+#!/usr/bin/python
+'''
+Name: anyconnect_create.py
+Description: Scrip to automate the vpn creation on the 5510 ASA in the VA datacenter for all users
+By: Techtonic (probably with massive help from Dichotomy)
+Info: A valid user accout with priv 15 is currently required for this to run. Promted for at runtime.
+Can potentially be completed by a lower priv account but all required command will need to be dropped to that priv.
+If that is a static account and it becomes compromised, then the attacker could potentially use that account to create a vpn for themselves. 
+'''
+
+import netmiko
+import random
+import string
+
+ip_addr = '209.10.72.159'
+
+# function to create randomized password
+def ran_pass(size=24, char=string.ascii_upercase + string.digits):
+    new_pass = ''.join(random.choice(char) for num in range(size))
+    return new_pass 
+
+# function to add username and password to correct vpn policy
+# def create_config():
+
+
+# function to log into device and send configuration
+
+def send_config(ssh_conn):
+    my_username = input('Enter Username for ASA: ')
+    my_pass = getpass()
+    net_device = {
+        'device_type': 'cisco_asa',
+        'ip': ip_addr,
+        'username': my_username,
+        'password': my_pass,
+        'secret': my_pass,
+        'port': 22,
+    }
+    print('\nLogging in to ASA')
+    ssh_conn = ConnectHandler(**net_device)
+    print('\n')
+    print(ssh_conn.find_prompt()) 
+    # send config 
+
+
+
+def main():
+    
+    #ask for policy/team (ie red, blue, gold) - case selection
+    menu = {}
+    menu['1']="Red Teamer." 
+    menu['2']="Blue Team Pro."
+    menu['3']="Blue Team Joe"
+    menu['4']="Gold Team"
+    menu['5']="Exit"
+    while True: 
+        options=menu.keys()
+        options.sort()
+        for entry in options: 
+            print(entry, menu[entry])
+
+        selection=raw_input("Please Select:") 
+        if selection =='1': 
+            print("RED") 
+        elif selection == '2': 
+            print("Blue Pro")
+        elif selection == '3':
+            print("Blue Joe") 
+        elif selection == '4':
+            print("Gold")
+        elif selection == '5': 
+            break
+        else: 
+            print("Unknown Option Selected!") 
+
+	#new_username = input('\nEnter Username for new user: ')
+	#create password
+	#create config commands
+	
+	#send config to firewalls
+
+if __name__ == '__main__':
+    main()
+
